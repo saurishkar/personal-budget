@@ -1,0 +1,17 @@
+{
+  "name": "personal-budget-node",
+  "version": "1.0.0",
+  "main": "server/index.js",
+  "author": "Saurish Kar",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  }
+}
