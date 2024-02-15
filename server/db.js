@@ -10,8 +10,17 @@ const getAllEnvelopes = () => {
     return envelopes;
 }
 
+const getEnvelopeById = (envelopeId) => {
+    const envelopeIndex = envelopes.findIndex((record) => record.id === Number(envelopeId));
+    console.log(envelopeIndex);
+    if(envelopeIndex === -1) {
+        return;
+    }
+    return envelopes[envelopeIndex];
+}
 
 module.exports = {
     createEnvelope,
-    getAllEnvelopes
+    getAllEnvelopes,
+    getEnvelopeById
 }

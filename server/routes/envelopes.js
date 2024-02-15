@@ -1,5 +1,5 @@
 const express = require('express');
-const { createEnvelope, getAllEnvelopes } = require("../db");
+const { createEnvelope, getAllEnvelopes, getEnvelopeById } = require("../db");
 
 const envelopeRouter = express();
 
@@ -18,5 +18,14 @@ envelopeRouter.post("/", (req, res, next) => {
 envelopeRouter.get("/", (req, res, next) => {
     res.send(getAllEnvelopes());
 });
+
+envelopeRouter.get("/:envelopeId", (req, res, next) => {
+    const envelope = getEnvelopeById(req.params.envelopeId);
+    if(envelope) {
+        res.send(envelope);
+        return;
+    }
+    res.status(404).send("Envelope not found");
+})
 
 module.exports = envelopeRouter;
