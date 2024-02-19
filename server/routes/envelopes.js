@@ -1,5 +1,5 @@
 const express = require('express');
-const { createEnvelope, updateEnvelope, getAllEnvelopes, getEnvelopeById, deleteEnvelope } = require("../db");
+const { createEnvelope, updateEnvelope, getAllEnvelopes, getEnvelopeById, deleteEnvelope, transferBalance, getEnvelopeIndexFromId } = require("../db");
 
 const envelopeRouter = express();
 
@@ -19,8 +19,29 @@ envelopeRouter.get("/", (req, res, next) => {
     res.send(getAllEnvelopes());
 });
 
+envelopeRouter.post("/balance-transfer", (req, res, next) => {
+    const from = Number(req.body.from);
+    const to = Number(req.body.to);
+    const balance = Number(req.body.balance);
+    const fromIndex = getEnvelopeIndexFromId(from);
+    const toIndex = getEnvelopeIndexFromId(to);
+
+    if(balance <= 0) {
+        res.status(400).send("Balance should be greater than 0");
+        return;
+    }
+    console.log(1234, from, to, typeof from, typeof to);
+    if(fromIndex < 0 || toIndex < 0) {
+        res.status(400).send("Envelope not found");
+        return;
+    }
+
+
+    res.send(transferBalance(fromIndex, toIndex, balance));
+})
+
 envelopeRouter.param("envelopeId", (req, res, next, envelopeId) => {
-    const envelope = getEnvelopeById(req.params.envelopeId);
+    const envelope = getEnvelopeById(envelopeId);
     if(!envelope) {
         res.status(404).send("Envelope not found");
         return;

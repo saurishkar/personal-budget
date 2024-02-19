@@ -11,7 +11,9 @@ const getAllEnvelopes = () => {
 }
 
 const getEnvelopeIndexFromId = (envelopeId) => {
-    return envelopes.findIndex((record) => record.id === Number(envelopeId));
+    return envelopes.findIndex((record) => {
+        return record.id === Number(envelopeId)
+    });
 }
 
 const getEnvelopeById = (envelopeId) => {
@@ -50,10 +52,22 @@ const deleteEnvelope = (envelopeId) => {
     return envelopes;
 }
 
+const transferBalance = (fromIndex, toIndex, balance = 0) => {
+    if(envelopes[fromIndex].balance < balance) {
+        throw new Error("Current balance cannot be less than transfer balance");
+        return;
+    }
+    envelopes[fromIndex].balance -= balance;
+    envelopes[toIndex].balance += balance;
+    return envelopes;
+}
+
 module.exports = {
     createEnvelope,
     updateEnvelope,
     getAllEnvelopes,
     getEnvelopeById,
-    deleteEnvelope
+    getEnvelopeIndexFromId,
+    deleteEnvelope,
+    transferBalance
 }
